@@ -18,7 +18,6 @@ public class WebsocketChannelInitializer extends ChannelInitializer<SocketChanne
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         ChannelPipeline pipeline = socketChannel.pipeline();
-        pipeline.addLast(new IdleStateHandler(0,0,60));
         pipeline.addLast(new HttpServerCodec());
         pipeline.addLast(new HttpObjectAggregator(65536)); // 聚合HTTP消息
         pipeline.addLast(new ChunkedWriteHandler());
