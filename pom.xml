@@ -5,12 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>forkcc</groupId>
-    <artifactId>open-im-msg</artifactId>
+    <artifactId>open-im</artifactId>
     <version>1.0.0</version>
+    <packaging>pom</packaging>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.12</version>
+        <version>3.4.1</version>
     </parent>
     <properties>
         <java.version>21</java.version>
@@ -32,8 +33,12 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-undertow</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
