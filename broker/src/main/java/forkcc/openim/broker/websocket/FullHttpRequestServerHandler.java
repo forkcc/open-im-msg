@@ -26,9 +26,10 @@ public class FullHttpRequestServerHandler extends SimpleChannelInboundHandler<Fu
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, FullHttpRequest msg) throws Exception {
         QueryStringDecoder decoder = new QueryStringDecoder(msg.uri());
-        List<String> tokens = Optional.ofNullable(decoder.parameters()).orElseGet(Map::of).get("token");
-        tokens = Optional.ofNullable(tokens).orElseGet(List::of);
-        callback.connect(tokens);
+        String token = Optional.ofNullable(Optional.ofNullable(decoder.parameters()).orElseGet(Map::of).get("token"))
+                .orElseGet(List::of)
+                .parallelStream().findFirst().orElse(null);
+        callback.connect(token);
         FullHttpRequest request =
                 new DefaultFullHttpRequest(msg.protocolVersion(), msg.method(), decoder.rawPath(), msg.content().copy(), msg.headers().copy(), msg.trailingHeaders().copy());
         channelHandlerContext.fireChannelRead(request);
