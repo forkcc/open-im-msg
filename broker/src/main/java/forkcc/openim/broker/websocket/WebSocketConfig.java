@@ -1,5 +1,6 @@
 package forkcc.openim.broker.websocket;
 
+import forkcc.openim.broker.callback.ClientCallback;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.epoll.Epoll;
@@ -10,6 +11,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
+import io.netty.handler.timeout.IdleStateHandler;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +24,8 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class WebSocketConfig {
     private final WebsocketProperties websocketProperties;
-    private final FullHttpRequestServerHandler fullHttpRequestServerHandler;
     private final WebSocketServerHandler webSocketServerHandler;
+    private final ClientCallback clientCallback;
     @Bean
     public EventLoopGroup bossGroup(){
         if(Epoll.isAvailable()){
@@ -53,8 +55,9 @@ public class WebSocketConfig {
                 pipeline.addLast(new HttpServerCodec());
                 //最大只能传2MB数据
                 pipeline.addLast(new HttpObjectAggregator(1024 * 1024 * 2));
-                pipeline.addLast(fullHttpRequestServerHandler);
-                pipeline.addLast(new WebSocketServerProtocolHandler(websocketProperties.getContextPath()));
+                pipeline.addLast(new FullHttpRequestServerHandler(clientCallback, websocketProperties.getContextPath()));
+                pipeline.addLast(new IdleStateHandler(10, 10, 0));
+                pipeline.addLast(new WebSocketServerProtocolHandler(websocketProperties.getContextPath(), true));
                 pipeline.addLast(webSocketServerHandler);
             }
         });
