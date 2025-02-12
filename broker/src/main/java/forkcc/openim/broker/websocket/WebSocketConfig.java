@@ -26,6 +26,7 @@ public class WebSocketConfig {
     private final WebsocketProperties websocketProperties;
     private final WebSocketServerHandler webSocketServerHandler;
     private final ClientCallback clientCallback;
+    private final ChannelPool channelPool;
     @Bean
     public EventLoopGroup bossGroup(){
         if(Epoll.isAvailable()){
@@ -55,7 +56,7 @@ public class WebSocketConfig {
                 pipeline.addLast(new HttpServerCodec());
                 //最大只能传2MB数据
                 pipeline.addLast(new HttpObjectAggregator(1024 * 1024 * 2));
-                pipeline.addLast(new FullHttpRequestServerHandler(clientCallback, websocketProperties.getContextPath()));
+                pipeline.addLast(new FullHttpRequestServerHandler(clientCallback, websocketProperties.getContextPath(), channelPool));
                 pipeline.addLast(new IdleStateHandler(10, 10, 0));
                 pipeline.addLast(new WebSocketServerProtocolHandler(websocketProperties.getContextPath(), true));
                 pipeline.addLast(webSocketServerHandler);
