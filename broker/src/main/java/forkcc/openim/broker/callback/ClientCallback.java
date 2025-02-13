@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 public class ClientCallback {
     public static final AttributeKey<String> TOKEN = AttributeKey.newInstance("user.token");
     public static final AttributeKey<String> CLIENT_ID = AttributeKey.newInstance("user.client.id");
+    public static final AttributeKey<String> DEVICE_TYPE = AttributeKey.newInstance("device.type");
     /**
      * 连接前进行Token验证
      */
