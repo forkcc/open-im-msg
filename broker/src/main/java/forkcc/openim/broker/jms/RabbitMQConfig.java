@@ -18,7 +18,7 @@ import java.util.UUID;
 @EnableRabbit
 @RequiredArgsConstructor
 public class RabbitMQConfig implements RabbitListenerConfigurer {
-    public static final String QUEUE_NAME = "message.queue."+ UUID.randomUUID().toString().replace("-", ".");
+    public static final String QUEUE_NAME = "message.online.queue."+ UUID.randomUUID().toString().replace("-", ".");
     private final ChannelPool channelPool;
     @Bean
     public FanoutExchange messageExchange() {

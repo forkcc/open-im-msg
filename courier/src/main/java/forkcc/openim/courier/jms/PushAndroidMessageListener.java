@@ -5,7 +5,7 @@ import org.springframework.amqp.core.MessageListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PushMessageListener implements MessageListener {
+public class PushAndroidMessageListener implements MessageListener {
     @Override
     public void onMessage(Message message) {
 

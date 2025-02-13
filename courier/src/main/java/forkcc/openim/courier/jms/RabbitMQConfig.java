@@ -5,7 +5,6 @@ import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerEndpoint;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
@@ -18,28 +17,43 @@ import java.util.UUID;
 @EnableRabbit
 @RequiredArgsConstructor
 public class RabbitMQConfig implements RabbitListenerConfigurer {
-    public static final String QUEUE_NAME = "message.queue."+ UUID.randomUUID().toString().replace("-", ".");
-    private final PushMessageListener pushMessageListener;
+    public static final String QUEUE_IOS_NAME = "message.ios.offline.queue";
+    public static final String QUEUE_ANDROID_NAME = "message.android.offline.queue";
+    private final PushIosMessageListener pushIosMessageListener;
+    private final PushAndroidMessageListener pushAndroidMessageListener;
     @Bean
     public FanoutExchange messageExchange() {
         return new FanoutExchange("jms.message.list", true, false);
     }
 
     @Bean
-    public Queue messageQueue() {
-        return new Queue(QUEUE_NAME, false, false,true);
+    public Queue messageIosQueue() {
+        return new Queue(QUEUE_IOS_NAME, true, true,false);
     }
     @Bean
-    public Binding messageBinding(){
-        return BindingBuilder.bind(messageQueue()).to(messageExchange());
+    public Queue messageAndroidQueue() {
+        return new Queue(QUEUE_ANDROID_NAME, true, true,false);
+    }
+    @Bean
+    public Binding messageIosBinding(){
+        return BindingBuilder.bind(messageIosQueue()).to(messageExchange());
+    }
+    @Bean
+    public Binding messageAndroidBinding(){
+        return BindingBuilder.bind(messageAndroidQueue()).to(messageExchange());
     }
 
     @Override
     public void configureRabbitListeners(RabbitListenerEndpointRegistrar rabbitListenerEndpointRegistrar) {
         SimpleRabbitListenerEndpoint endpoint = new SimpleRabbitListenerEndpoint();
-        endpoint.setId("messageListener");
-        endpoint.setQueueNames(QUEUE_NAME);
-        endpoint.setMessageListener(pushMessageListener);
+        endpoint.setId("messageIosListener");
+        endpoint.setQueueNames(QUEUE_IOS_NAME);
+        endpoint.setMessageListener(pushIosMessageListener);
+        rabbitListenerEndpointRegistrar.registerEndpoint(endpoint);
+        endpoint = new SimpleRabbitListenerEndpoint();
+        endpoint.setId("messageAndroidListener");
+        endpoint.setQueueNames(QUEUE_ANDROID_NAME);
+        endpoint.setMessageListener(pushAndroidMessageListener);
         rabbitListenerEndpointRegistrar.registerEndpoint(endpoint);
     }
 }
