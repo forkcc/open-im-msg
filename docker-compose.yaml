@@ -1,0 +1,12 @@
+services:
+  jms-broker:
+    image: rabbitmq:3-management
+    container_name: jsm-broker
+    environment:
+      RABBITMQ_DEFAULT_USER: open-im
+      RABBITMQ_DEFAULT_PASS: open-im
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - ~/open-im/js:/var/lib/rabbitmq

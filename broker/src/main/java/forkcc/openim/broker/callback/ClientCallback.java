@@ -12,7 +12,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class ClientCallback {
-    private static final AttributeKey<String> TOKEN = AttributeKey.newInstance("user.token");
+    public static final AttributeKey<String> TOKEN = AttributeKey.newInstance("user.token");
+    public static final AttributeKey<String> CLIENT_ID = AttributeKey.newInstance("user.client.id");
     /**
      * 连接前进行Token验证
      */

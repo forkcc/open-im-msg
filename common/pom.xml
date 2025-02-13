@@ -6,7 +6,16 @@
   <artifactId>common</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>
-
+  <parent>
+    <groupId>forkcc</groupId>
+    <artifactId>openim</artifactId>
+    <version>1.0.0</version>
+  </parent>
   <name>common</name>
-
+  <dependencies>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+  </dependencies>
 </project>
