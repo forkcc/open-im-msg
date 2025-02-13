@@ -28,11 +28,11 @@ public class RabbitMQConfig implements RabbitListenerConfigurer {
 
     @Bean
     public Queue messageIosQueue() {
-        return new Queue(QUEUE_IOS_NAME, true, true,false);
+        return new Queue(QUEUE_IOS_NAME, true, false,false);
     }
     @Bean
     public Queue messageAndroidQueue() {
-        return new Queue(QUEUE_ANDROID_NAME, true, true,false);
+        return new Queue(QUEUE_ANDROID_NAME, true, false,false);
     }
     @Bean
     public Binding messageIosBinding(){
