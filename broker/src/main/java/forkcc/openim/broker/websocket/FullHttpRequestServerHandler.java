@@ -25,14 +25,16 @@ public class FullHttpRequestServerHandler extends SimpleChannelInboundHandler<Fu
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest msg) throws Exception {
         String uri = msg.uri();
-        if(!uri.startsWith(contextPath)){
+        String contextPathNew = contextPath;
+        if (!contextPath.endsWith("/")){
+            contextPathNew = contextPath.concat("/");
+        }
+        if(!uri.startsWith(contextPathNew)){
             ctx.writeAndFlush(new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.NOT_FOUND)).addListener(ChannelFutureListener.CLOSE);
             return;
         }
-        String token = uri.replaceAll(contextPath, "");
-        if(token.startsWith("/")){
-            token = token.substring(1);
-        }
+        String token = uri.replaceAll(contextPathNew, "");
+
         callback.connect(token, ctx);
         FullHttpRequest request =
                 new DefaultFullHttpRequest(msg.protocolVersion(), msg.method(), uri, msg.content().copy(), msg.headers().copy(), msg.trailingHeaders().copy());
