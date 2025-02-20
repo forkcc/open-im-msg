@@ -25,4 +25,8 @@ public class PushMessage {
      * 额外参数
      */
     private String extra;
+    /**
+     * 文本信息
+     */
+    private String message;
 }
