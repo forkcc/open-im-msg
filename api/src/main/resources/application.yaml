@@ -1,0 +1,16 @@
+spring:
+  rabbitmq:
+    host: ${RABBIT_MQ_HOST:127.0.0.1}
+    username: ${RABBIT_MQ_USER:open-im}
+    password: ${RABBIT_MQ_PASS:open-im}
+    port: ${RABBIT_MQ_PORT:5672}
+
+  datasource:
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    url: jdbc:hsqldb:mem:testdb;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update

@@ -7,7 +7,6 @@ import forkcc.openim.broker.callback.ClientCallback;
 import forkcc.openim.broker.cmd.AbstractCMD;
 import forkcc.openim.common.exception.BizException;
 import forkcc.openim.common.kit.AssertKit;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -24,7 +23,6 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 @Slf4j
 @Component

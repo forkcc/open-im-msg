@@ -1,6 +1,5 @@
 package forkcc.openim.broker.callback;
 
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import forkcc.openim.common.exception.BizException;
 import forkcc.openim.common.kit.AssertKit;
