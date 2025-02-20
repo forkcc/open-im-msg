@@ -1,6 +1,6 @@
 websocket:
   port: 8989
-  context-path: ${WEBSOCKET_PATH:/ws}
+  context-path: ${WEBSOCKET_PATH:/chat}
 
 spring:
   rabbitmq:

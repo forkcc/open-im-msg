@@ -16,6 +16,10 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.*;
 
+/**
+ * Websocket 握手拦截器
+ *     用于解析地址上的token
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class FullHttpRequestServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {

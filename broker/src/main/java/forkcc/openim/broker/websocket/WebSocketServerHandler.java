@@ -33,6 +33,8 @@ import java.util.UUID;
 public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
     private final List<AbstractCMD> cmdList;
     private final ClientCallback callback;
+    private static final String TR_ID_STR="trid";
+    private static final String UU_ID_STR="uuid";
     private static final AttributeKey<String> TR_ID = AttributeKey.newInstance("tr.id");
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame webSocketFrame) throws Exception {
@@ -41,13 +43,13 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
             return;
         }
         JSONObject object = JSONUtil.parseObj(json);
-        AssertKit.validState(StrUtil.isNotBlank(object.getStr("uuid")),new BizException("缺少uuid参数"));
-        AssertKit.validState(StrUtil.isNotBlank(object.getStr("trid")),new BizException("缺少trid参数"));
-        MDC.put("uuid", object.getStr("uuid"));
-        MDC.put("trid", object.getStr("trid"));
+        AssertKit.validState(StrUtil.isNotBlank(object.getStr(UU_ID_STR)),new BizException("缺少uuid参数"));
+        AssertKit.validState(StrUtil.isNotBlank(object.getStr(TR_ID_STR)),new BizException("缺少trid参数"));
+        MDC.put(UU_ID_STR, object.getStr(UU_ID_STR));
+        MDC.put(TR_ID_STR, object.getStr(TR_ID_STR));
         if(StrUtil.isBlank(ctx.channel().attr(TR_ID).get())){
-            ctx.channel().attr(TR_ID).set(object.getStr("trid"));
-        }else if(!Objects.equals(ctx.channel().attr(TR_ID).get(), object.getStr("trid"))){
+            ctx.channel().attr(TR_ID).set(object.getStr(TR_ID_STR));
+        }else if(!Objects.equals(ctx.channel().attr(TR_ID).get(), object.getStr(TR_ID_STR))){
             ctx.writeAndFlush(new TextWebSocketFrame(JSONUtil.toJsonPrettyStr(JSONUtil.createObj().putOnce("code", -2).putOnce("message", "trid变动"))));
         }
         Optional<AbstractCMD> optional = cmdList.stream().filter(cmd -> Objects.equals(object.getStr("cmd"), cmd.getName())).findFirst();
